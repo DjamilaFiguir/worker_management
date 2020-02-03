@@ -16,9 +16,47 @@ class WorkerListState extends State<WorkerList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Worker> workerList;
   int count = 0;
+  String _searchText = "";
+  Icon _searchIcon = new Icon(Icons.search);
+  Widget _appBarTitle = new Text('Worker List');
+  final TextEditingController _filter = new TextEditingController();
+  List filteredNames = new List(); // names filtered by search text
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          controller: _filter,
+          decoration: new InputDecoration(
+              prefixIcon: new Icon(Icons.search), hintText: 'Search...'),
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text('Worker List');
+        filteredNames = workerList;
+        _filter.clear();
+      }
+    });
+  }
+
+  examplePageState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          filteredNames = workerList;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    examplePageState();
     if (workerList == null) {
       workerList = List<Worker>();
       updateListView();
@@ -26,15 +64,13 @@ class WorkerListState extends State<WorkerList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workers'),
+        title: _appBarTitle,
         backgroundColor: Color.fromARGB(220, 0, 175, 201),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: null)
+          new IconButton(
+            icon: _searchIcon,
+            onPressed: () => _searchPressed(),
+          ),
         ],
       ),
       body: getWorkerListView(),
@@ -52,8 +88,19 @@ class WorkerListState extends State<WorkerList> {
   }
 
   ListView getWorkerListView() {
+    if (_searchText.isNotEmpty) {
+      List tempList = new List();
+      for (int i = 0; i < filteredNames.length; i++) {
+        if (filteredNames[i].nameEdit
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())) {
+          tempList.add(filteredNames[i]);
+        }
+      }
+      filteredNames = tempList;
+    }
     return ListView.builder(
-      itemCount: count,
+      itemCount: workerList == null ? 0 : filteredNames.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           color: Colors.white24,
@@ -70,9 +117,9 @@ class WorkerListState extends State<WorkerList> {
                 color: Color.fromARGB(220, 0, 175, 201),
               ),
             ),
-            title: Text(this.workerList[position].nameEdit,
+            title: Text(filteredNames[position].nameEdit,
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(this.workerList[position].phoneEdit),
+            subtitle: Text(filteredNames[position].phoneEdit),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -81,7 +128,7 @@ class WorkerListState extends State<WorkerList> {
             ),
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.workerList[position], 'Edit Worker');
+              navigateToDetail(filteredNames[position], 'Edit Worker');
             },
           ),
         );
@@ -124,6 +171,7 @@ class WorkerListState extends State<WorkerList> {
       workerListFuture.then((workerList) {
         setState(() {
           this.workerList = workerList;
+          filteredNames=workerList;
           this.count = workerList.length;
         });
       });
