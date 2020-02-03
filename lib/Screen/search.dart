@@ -47,7 +47,7 @@ class _SearchState extends State<Search> {
     });
   }
 
-  ExamplePageState() {
+  examplePageState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -63,7 +63,7 @@ class _SearchState extends State<Search> {
   }
 
   Widget _buildList() {
-    if (!(_searchText.isEmpty)) {
+    if (!(_searchText==null)) {
       List tempList = new List();
       for (int i = 0; i < filteredNames.length; i++) {
         if (filteredNames[i]['name']
@@ -84,9 +84,14 @@ class _SearchState extends State<Search> {
       },
     );
   }
-
+@override
+  void initState() {
+     _getNames();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+   examplePageState();
     return Scaffold(
         appBar: AppBar(
           title: _appBarTitle,
