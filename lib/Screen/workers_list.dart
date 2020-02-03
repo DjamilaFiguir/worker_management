@@ -27,6 +27,15 @@ class WorkerListState extends State<WorkerList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Workers'),
+        backgroundColor: Color.fromARGB(220, 0, 175, 201),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: null)
+        ],
       ),
       body: getWorkerListView(),
       floatingActionButton: FloatingActionButton(
@@ -34,6 +43,8 @@ class WorkerListState extends State<WorkerList> {
           debugPrint('FAB clicked');
           navigateToDetail(Worker('', ''), 'Add Worker');
         },
+        elevation: 7,
+        backgroundColor: Color.fromARGB(220, 0, 175, 201),
         tooltip: 'Add Worker',
         child: Icon(Icons.add),
       ),
@@ -45,13 +56,19 @@ class WorkerListState extends State<WorkerList> {
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
         return Card(
-          color: Colors.white,
-          elevation: 2.0,
+          color: Colors.white24,
+          elevation: 0.0,
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.amber,
-              child: Text(getFirstLetter(this.workerList[position].nameEdit),
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+            leading: Card(
+              elevation: 16,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(75.0),
+              ),
+              color: Colors.white12,
+              child: Icon(
+                Icons.work,
+                color: Color.fromARGB(220, 0, 175, 201),
+              ),
             ),
             title: Text(this.workerList[position].nameEdit,
                 style: TextStyle(fontWeight: FontWeight.bold)),
@@ -59,12 +76,7 @@ class WorkerListState extends State<WorkerList> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                GestureDetector(
-                  child: Icon(Icons.delete,color: Colors.red,),
-                  onTap: () {
-                    _delete(context, workerList[position]);
-                  },
-                ),
+                Text('500 DZD'),
               ],
             ),
             onTap: () {
@@ -81,7 +93,7 @@ class WorkerListState extends State<WorkerList> {
     return title.substring(0, 2);
   }
 
-  void _delete(BuildContext context, Worker worker) async {
+  /*void _delete(BuildContext context, Worker worker) async {
     int result = await databaseHelper.deleteWorker(worker.id);
     if (result != 0) {
       _showSnackBar(context, 'Worker Deleted Successfully');
@@ -92,7 +104,7 @@ class WorkerListState extends State<WorkerList> {
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(content: Text(message));
     Scaffold.of(context).showSnackBar(snackBar);
-  }
+  }*/
 
   void navigateToDetail(Worker worker, String title) async {
     bool result =
@@ -117,6 +129,4 @@ class WorkerListState extends State<WorkerList> {
       });
     });
   }
-
-  
 }
