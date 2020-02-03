@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestion/Models/design.dart';
 import 'package:gestion/Models/worker.dart';
 import 'package:gestion/Screen/search.dart';
 import '../database_helper.dart';
@@ -45,13 +46,14 @@ class WorkerDetailState extends State<WorkerDetail> {
                 onPressed: () {
                   moveToLastScreen();
                 }),
+            backgroundColor: appbarColor,
           ),
           body: Padding(
             padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
             child: ListView(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 15,right: 15),
                   child: TextField(
                     controller: nameController,
                     style: textStyle,
@@ -67,7 +69,7 @@ class WorkerDetailState extends State<WorkerDetail> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 15,right: 15),
                   child: TextField(
                     controller: phoneController,
                     keyboardType: TextInputType.number,
@@ -84,16 +86,24 @@ class WorkerDetailState extends State<WorkerDetail> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 15,right: 15),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Save',
-                            textScaleFactor: 1.5,
+                          color:appbarColor ,
+                          elevation: 6,
+                          textColor: Colors.white,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.save,color: Colors.white,size: 22,),
+                              SizedBox(width: 10,),
+                              Text(
+                              'Save',
+                              textScaleFactor: 1.45,
+                            ),
+                            ],                        
                           ),
                           onPressed: () {
                             setState(() {
@@ -104,15 +114,23 @@ class WorkerDetailState extends State<WorkerDetail> {
                         ),
                       ),
                       Container(
-                        width: 5.0,
+                        width: 25.0,
                       ),
                       Expanded(
                         child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
+                          color:  Color.fromARGB(220,232, 232, 232),
+                          textColor: appbarColor,
+                          elevation: 6,
+                         child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.delete,color: appbarColor,size: 22,),
+                              SizedBox(width: 10,),
+                              Text(
+                              'Delete',
+                              textScaleFactor: 1.45,
+                            ),
+                            ],                        
                           ),
                           onPressed: () {
                             setState(() {
@@ -125,15 +143,6 @@ class WorkerDetailState extends State<WorkerDetail> {
                     ],
                   ),
                 ),
-                FlatButton(
-                  child: Text('Click me'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Search()),
-                    );
-                  },
-                )
               ],
             ),
           ),

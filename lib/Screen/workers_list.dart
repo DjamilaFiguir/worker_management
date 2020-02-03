@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gestion/Models/design.dart';
 import 'package:gestion/Models/worker.dart';
 import 'package:gestion/Screen/worker_detail.dart';
 import 'package:sqflite/sqflite.dart';
@@ -27,8 +28,13 @@ class WorkerListState extends State<WorkerList> {
         this._searchIcon = new Icon(Icons.close);
         this._appBarTitle = new TextField(
           controller: _filter,
+         style: TextStyle(color: Colors.white,fontSize: 20),
           decoration: new InputDecoration(
-              prefixIcon: new Icon(Icons.search), hintText: 'Search...'),
+            prefixIcon: new Icon(Icons.search,color: Colors.white70,),
+            hintText: 'Search Worker...',
+            hintStyle: TextStyle(color: Colors.white70),
+            border: InputBorder.none,
+          ),
         );
       } else {
         this._searchIcon = new Icon(Icons.search);
@@ -65,7 +71,7 @@ class WorkerListState extends State<WorkerList> {
     return Scaffold(
       appBar: AppBar(
         title: _appBarTitle,
-        backgroundColor: Color.fromARGB(220, 0, 175, 201),
+        backgroundColor: appbarColor,
         actions: <Widget>[
           new IconButton(
             icon: _searchIcon,
@@ -80,7 +86,7 @@ class WorkerListState extends State<WorkerList> {
           navigateToDetail(Worker('', ''), 'Add Worker');
         },
         elevation: 7,
-        backgroundColor: Color.fromARGB(220, 0, 175, 201),
+        backgroundColor: appbarColor,
         tooltip: 'Add Worker',
         child: Icon(Icons.add),
       ),
@@ -91,7 +97,8 @@ class WorkerListState extends State<WorkerList> {
     if (_searchText.isNotEmpty) {
       List tempList = new List();
       for (int i = 0; i < filteredNames.length; i++) {
-        if (filteredNames[i].nameEdit
+        if (filteredNames[i]
+            .nameEdit
             .toLowerCase()
             .contains(_searchText.toLowerCase())) {
           tempList.add(filteredNames[i]);
@@ -114,7 +121,7 @@ class WorkerListState extends State<WorkerList> {
               color: Colors.white12,
               child: Icon(
                 Icons.work,
-                color: Color.fromARGB(220, 0, 175, 201),
+                color: appbarColor,
               ),
             ),
             title: Text(filteredNames[position].nameEdit,
@@ -171,7 +178,7 @@ class WorkerListState extends State<WorkerList> {
       workerListFuture.then((workerList) {
         setState(() {
           this.workerList = workerList;
-          filteredNames=workerList;
+          filteredNames = workerList;
           this.count = workerList.length;
         });
       });

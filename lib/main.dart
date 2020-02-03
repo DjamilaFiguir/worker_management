@@ -9,7 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.bl,
+        hoverColor: Color.fromARGB(220, 0, 175, 201),
+        
       ),
       debugShowCheckedModeBanner: false,
       home: WorkerList(),
